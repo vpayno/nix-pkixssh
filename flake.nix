@@ -35,6 +35,28 @@
         }:
         {
           formatter = inputs.treefmt-conf.formatter.${system};
+
+          devShells = {
+            default = pkgs.mkShell {
+              name = "pkixssh-dev-shell.${system}";
+              packages = with pkgs; [
+                bashInteractive
+                binutils
+                coreutils
+                gawk
+                git
+                gnugrep
+                gnused
+                moreutils
+              ];
+              env = {
+              };
+              shellHook = ''
+                ${pkgs.lib.getExe pkgs.cowsay} "Welcome to ${self'.devShells.default.name}"
+                printf "\n"
+              '';
+            };
+          };
         };
 
       # old legacy flake (migrate to modules and perSystem)
