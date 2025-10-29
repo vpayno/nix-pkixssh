@@ -55,6 +55,7 @@
                 ]
                 ++ (with self'.packages; [
                   pkixssh-client
+                  pkixssh-client.man
                 ]);
               env = {
               };

@@ -45,6 +45,7 @@ You can also use it in a devShell or a system using the path
 		devShells.${system} = pkgs.mkShell {
 			packages = [
 				pkixssh.packages.${system}.pkixssh-client
+				pkixssh.packages.${system}.pkixssh-client.man
 			];
 		};
 	}
