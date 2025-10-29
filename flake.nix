@@ -47,9 +47,11 @@
                   coreutils
                   gawk
                   git
+                  glow
                   gnugrep
                   gnused
                   moreutils
+                  runme
                 ]
                 ++ (with self'.packages; [
                   pkixssh-client
