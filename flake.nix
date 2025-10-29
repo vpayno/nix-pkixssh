@@ -38,17 +38,22 @@
 
           devShells = {
             default = pkgs.mkShell {
-              name = "pkixssh-dev-shell.${system}";
-              packages = with pkgs; [
-                bashInteractive
-                binutils
-                coreutils
-                gawk
-                git
-                gnugrep
-                gnused
-                moreutils
-              ];
+              name = "pkixssh-client-dev-shell.${system}";
+              packages =
+                with pkgs;
+                [
+                  bashInteractive
+                  binutils
+                  coreutils
+                  gawk
+                  git
+                  gnugrep
+                  gnused
+                  moreutils
+                ]
+                ++ (with self'.packages; [
+                  pkixssh-client
+                ]);
               env = {
               };
               shellHook = ''
@@ -56,6 +61,61 @@
                 printf "\n"
               '';
             };
+          };
+
+          packages = {
+            pkixssh-client = pkgs.stdenv.mkDerivation (finalAttrs: rec {
+              pname = "pkixssh-client";
+              version = "17.1.2";
+              name = "${self'.packages.pkixssh-client.pname}-${self'.packages.pkixssh-client.version}";
+              src = pkgs.fetchgit {
+                url = "https://gitlab.com/secsh/pkixssh";
+                rev = "f34165a0bf224dd40e048d3628c238d3ef030f2b"; # v17.1.2
+                fetchSubmodules = false;
+                deepClone = false;
+                leaveDotGit = false;
+                sha256 = "sha256-uiYQOyOknp4UFbUFf6tfBbowXsqyLk/kqSO5MaeIG8E=";
+              };
+              nativeBuildInputs = with pkgs; [
+                autoconf
+                automake
+                tree
+              ];
+              buildInputs = with pkgs; [
+                openssl
+                openssl.dev
+                zlib
+                zlib.dev
+              ];
+              enableParallelBuilding = true;
+              outputs = [
+                "out"
+                "man"
+              ];
+              configureFlags = [
+                "--prefix=$out"
+                "--sysconfdir=$out/etc/ssh"
+              ];
+              configurePhase = ''
+                autoreconf
+                ./configure ${builtins.toString configureFlags}
+              '';
+              installPhase = ''
+                mkdir -pv $out/{bin,etc/ssh}
+                cp -vp ./contrib/ssh-copy-id ./contrib/ssh-askpass-zenity $out/bin/
+                # cp -vp sftp-server sshd $out/bin/
+                cp -vp scp sftp ssh ssh-add ssh-agent ssh-keygen ssh-keyscan ssh-keysign ssh-keysign ssh-pkcs11-helper $out/bin/
+                cp -v sshd_config ssh_config $out/etc/ssh/
+
+                mkdir -p $man/share/man/man{1,5,8}
+                cp -v ./*[.]1 $man/share/man/man1/
+                cp -v ./*[.]5 $man/share/man/man5/
+                cp -v ./*[.]8 $man/share/man/man8/
+                rm -fv $man/share/man/man*/sshd* $man/share/man/man*/sftp-server*
+
+                tree $out
+              '';
+            });
           };
         };
 
