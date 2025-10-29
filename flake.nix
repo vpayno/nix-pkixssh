@@ -108,7 +108,8 @@
                 cp -vp ./contrib/ssh-copy-id ./contrib/ssh-askpass-zenity $out/bin/
                 # cp -vp sftp-server sshd $out/bin/
                 cp -vp scp sftp ssh ssh-add ssh-agent ssh-keygen ssh-keyscan ssh-keysign ssh-keysign ssh-pkcs11-helper $out/bin/
-                cp -v sshd_config ssh_config $out/etc/ssh/
+                # cp -v sshd_config $out/etc/ssh/
+                cp -v ssh_config $out/etc/ssh/ssh_config.example
 
                 mkdir -p $man/share/man/man{1,5,8}
                 cp -v ./*[.]1 $man/share/man/man1/
@@ -116,7 +117,7 @@
                 cp -v ./*[.]8 $man/share/man/man8/
                 rm -fv $man/share/man/man*/sshd* $man/share/man/man*/sftp-server*
 
-                tree $out
+                tree $out $man
               '';
             });
           };
