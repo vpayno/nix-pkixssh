@@ -1,0 +1,42 @@
+{
+  description = "Flake for managing pkixssh";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+  };
+
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-parts,
+      ...
+    }@inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+      ];
+
+      imports = [
+      ];
+
+      perSystem =
+        {
+          config,
+          self',
+          inputs',
+          pkgs,
+          system,
+          ...
+        }:
+        {
+        };
+
+      # old legacy flake (migrate to modules and perSystem)
+      # also for nixosConfiguration, darwinConfigurations, etc
+      flake = {
+      };
+    };
+}
