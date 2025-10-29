@@ -5,6 +5,8 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    treefmt-conf.url = "github:vpayno/nix-treefmt-conf";
   };
 
   outputs =
@@ -32,6 +34,7 @@
           ...
         }:
         {
+          formatter = inputs.treefmt-conf.formatter.${system};
         };
 
       # old legacy flake (migrate to modules and perSystem)
