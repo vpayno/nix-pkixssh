@@ -72,15 +72,15 @@
           packages = {
             pkixssh-client = pkgs.stdenv.mkDerivation (finalAttrs: rec {
               pname = "pkixssh-client";
-              version = "17.1.2";
+              version = "17.2.2";
               name = "${self'.packages.pkixssh-client.pname}-${self'.packages.pkixssh-client.version}";
               src = pkgs.fetchgit {
                 url = "https://gitlab.com/secsh/pkixssh";
-                rev = "f34165a0bf224dd40e048d3628c238d3ef030f2b"; # v17.1.2
+                rev = "fa4106aaa5fba8528b95a8d6339d276e16ce03d2"; # v17.2.2
                 fetchSubmodules = false;
                 deepClone = false;
                 leaveDotGit = false;
-                sha256 = "sha256-uiYQOyOknp4UFbUFf6tfBbowXsqyLk/kqSO5MaeIG8E=";
+                sha256 = "sha256-oSTabO75NNAoyrvmtcaU9cwtoJni/nerGnz8/KFUZN4=";
               };
               nativeBuildInputs = with pkgs; [
                 autoconf
