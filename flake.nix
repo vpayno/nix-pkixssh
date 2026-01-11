@@ -74,6 +74,24 @@
               pname = "pkixssh-client";
               version = "17.2.2";
               name = "${self'.packages.pkixssh-client.pname}-${self'.packages.pkixssh-client.version}";
+              meta = {
+                homepage = "https://gitlab.com/secsh/pkixssh";
+                description = "PKIX-SSH - an advanced secure shell implementation";
+                changelog = "https://gitlab.com/secsh/pkixssh/-/tags";
+                licenses = with pkgs.lib.licenses; [
+                  bsd2
+                  {
+                    deprecated = false;
+                    free = true;
+                    fullName = "Tatu Ylonen License";
+                    redistributable = true;
+                    shortName = "tatu";
+                    url = "https://gitlab.com/secsh/pkixssh/-/blob/master/LICENCE?ref_type=heads";
+                  }
+                ];
+                inherit (pkgs.openssh.meta) platforms;
+                mainProgram = "ssh";
+              };
               src = pkgs.fetchgit {
                 url = "https://gitlab.com/secsh/pkixssh";
                 rev = "fa4106aaa5fba8528b95a8d6339d276e16ce03d2"; # v17.2.2
